@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import {
     createInlinePlayerTools,
     readInlinePlayerInfo,
@@ -29,7 +30,7 @@ import {
     type PlaybackRecommendationTarget,
 } from '@iptvnator/playback/util';
 import { PORTAL_EXTERNAL_PLAYBACK } from '@iptvnator/portal/shared/util';
-import { RuntimeCapabilitiesService, SettingsStore } from '@iptvnator/services';
+import { RuntimeCapabilitiesService, SettingsStore, injectTranslationTick } from '@iptvnator/services';
 import { PlaybackHistoryGate } from '@iptvnator/playback/data-access';
 import {
     VideoPlayer,
@@ -322,6 +323,9 @@ export class WebPlayerViewComponent implements OnDestroy {
         inject(PLAYBACK_ACTIVITY_EVENTS, { optional: true })
     );
 
+    private readonly inlinePlayerTranslate = inject(TranslateService);
+    private readonly inlinePlayerLanguageTick = injectTranslationTick();
+
     private inlinePlayerTools: ReturnType<
         typeof createInlinePlayerTools
     > | null = null;
@@ -340,6 +344,8 @@ export class WebPlayerViewComponent implements OnDestroy {
                     embeddedSupported:
                         this.runtime.supportsEmbeddedMpv === true,
                     read: readInfo,
+                    translate: (key) => this.inlinePlayerTranslate.instant(key),
+                    locale: () => this.inlinePlayerTranslate.currentLang || 'en',
                     switchTo: async (player) => {
                         this.recovery.syncSession();
                         await this.settingsStore.updateSettings({ player });
@@ -351,6 +357,7 @@ export class WebPlayerViewComponent implements OnDestroy {
             );
         });
         effect(() => {
+            this.inlinePlayerLanguageTick();
             const info = readInfo();
             this.inlinePlayerTools?.refresh(info);
         });

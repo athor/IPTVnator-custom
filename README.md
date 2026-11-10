@@ -11,7 +11,7 @@
 
 ## Download and installation
 
-**Windows x64:** [Download the custom ZIP](https://github.com/athor/IPTVnator-custom/releases/download/v0.25.0-custom.1/IPTVnator-custom-0.25.0.1-win-x64.zip) (about 295 MiB).
+**Windows x64:** [Download the custom ZIP](https://github.com/athor/IPTVnator-custom/releases/download/v0.25.0-custom.2/IPTVnator-custom-0.25.0.2-win-x64.zip) (about 295 MiB).
 
 1. Download the ZIP and extract **all** its contents to a folder.
 2. Close any other running IPTVnator window.
@@ -19,6 +19,6 @@
 
 Keep the executable and all accompanying folders together. Personal playlists and accounts are not included. An existing Windows user profile may be reused if you already have IPTVnator installed.
 
-[Release notes and SHA-256 checksums](https://github.com/athor/IPTVnator-custom/releases/tag/v0.25.0-custom.1) · [All custom releases](https://github.com/athor/IPTVnator-custom/releases)
+[Release notes and SHA-256 checksums](https://github.com/athor/IPTVnator-custom/releases/tag/v0.25.0-custom.2) · [All custom releases](https://github.com/athor/IPTVnator-custom/releases)
 
-The first Windows package is a snapshot of the customized 0.25.0 runtime, with French labels in the added toolbar. The source port in this repository uses English labels.
+The added controls follow the application language, with English as the fallback. All 21 existing application languages are supported.

@@ -11,7 +11,7 @@ The Redone fork adds a toolbar owned by `WebPlayerViewComponent` above the
 rendered engine. It saves explicit inline-player choices through `SettingsStore`,
 clears temporary recovery overrides, and retains the current route and content
 session. Its information panel is in document flow, outside the native MPV view,
-so it remains visible with the Windows native-view engine. Browser dimensions
+so it remains visible with the Windows native-view engine. Labels reuse the existing translated Settings and Embedded MPV keys. `injectTranslationTick` refreshes the mounted toolbar on language changes, including an open information panel, without replacing playback. English labels are the fallback. Browser dimensions
 come from media metadata events; MPV dimensions and stats come from its existing
 session snapshots. No extra stream connection or quality probe is opened.
 

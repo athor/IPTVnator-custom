@@ -107,4 +107,29 @@ describe('inline player tools', () => {
         await changing;
         expect(host.children.length).toBe(0);
     });
+    it('translates existing controls and open information without remounting', () => {
+        let language = 'en';
+        const translations: Record<string, Record<string, string>> = {
+            en: {'SETTINGS.VIDEO_PLAYER_LABEL': 'Video player', 'EMBEDDED_MPV.PLAYER.STREAM_INFO': 'Stream info', 'EMBEDDED_MPV.PLAYER.STATS_RESOLUTION': 'Resolution'},
+            fr: {'SETTINGS.VIDEO_PLAYER_LABEL': 'Lecteur vidéo', 'EMBEDDED_MPV.PLAYER.STREAM_INFO': 'Informations du flux', 'EMBEDDED_MPV.PLAYER.STATS_RESOLUTION': 'Résolution'},
+        };
+        const tools = createInlinePlayerTools(host, {
+            embeddedSupported: true,
+            read: () => ({player: VideoPlayer.EmbeddedMpv, width: 3840, height: 2160}),
+            switchTo: async () => undefined,
+            translate: key => translations[language][key] ?? key,
+            locale: () => language,
+        });
+        const select = host.querySelector('select')!;
+        host.querySelector('button')!.click();
+        language = 'fr'; tools.refresh();
+        expect(host.querySelector('select')).toBe(select);
+        expect(select.getAttribute('aria-label')).toBe('Lecteur vidéo');
+        expect(host.querySelector('[role=region]')!.textContent).toContain('Résolution: 3840 × 2160');
+        expect(select.value).toBe(VideoPlayer.EmbeddedMpv);
+        language = 'en'; tools.refresh();
+        expect(select.getAttribute('aria-label')).toBe('Video player');
+        tools.dispose();
+    });
+
 });
