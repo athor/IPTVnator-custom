@@ -18,8 +18,8 @@
 2. Close any other running IPTVnator window.
 3. Run `IPTVnator.exe` from the extracted folder. No installer is required.
 
-Keep the executable and all accompanying folders together. Personal playlists and accounts are not included. An existing Windows user profile may be reused if you already have IPTVnator installed.
+Personal playlists and accounts are not included. 
+An existing Windows user profile may be reused if you already have IPTVnator installed.
 
 [Release notes and SHA-256 checksums](https://github.com/athor/IPTVnator-custom/releases/tag/v0.25.0-custom.2) · [All custom releases](https://github.com/athor/IPTVnator-custom/releases)
 
-The added controls follow the application language, with English as the fallback. All 21 existing application languages are supported.
