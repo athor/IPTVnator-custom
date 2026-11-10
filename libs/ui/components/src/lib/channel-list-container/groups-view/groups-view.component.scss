@@ -22,9 +22,9 @@
 }
 
 .groups-nav-panel {
-    width: 208px;
-    min-width: 164px;
-    max-width: 320px;
+    width: 264px;
+    min-width: 200px;
+    max-width: 480px;
     flex-shrink: 0;
     min-height: 0;
     display: flex;
@@ -357,4 +357,24 @@
         opacity: 0.8;
         white-space: nowrap;
     }
+}
+
+// Preserve provider labels and keep counts independent of their wrapping.
+.group-nav-item .nav-item-label {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+    flex: 1 1 auto;
+}
+.group-nav-item .nav-item-meta {
+    flex: 0 0 auto;
+    padding: 1px 6px;
+    border-radius: 999px;
+    text-align: center;
+    background: var(--app-widget-header-bg);
+    color: var(--app-muted-color);
+}
+.groups-channels-viewport ::ng-deep .channel-logo-shell {
+    display: grid !important;
 }

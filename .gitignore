@@ -99,3 +99,14 @@ vendor/embedded-mpv/*/runtime-manifest.json
 # MemPalace per-project files (issue #185)
 mempalace.yaml
 entities.json
+
+# Personal IPTV sources, local profiles and patch-installation artifacts
+*.backup*
+*.asar
+*.node
+.local/
+private/
+*.m3u
+*.m3u8
+.env
+.env.local

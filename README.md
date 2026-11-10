@@ -1,3 +1,31 @@
+# IPTV Player Redone
+
+An independent fork of [IPTVnator](https://github.com/4gray/iptvnator), maintained by [athor](https://github.com/athor).
+The original source history, MIT license and copyright notices are preserved.
+
+## What's different from the official version?
+
+- **Switch players directly above the video.** Choose Video.js, HTML5, ArtPlayer or Embedded MPV without opening Settings or leaving the current channel and category. Embedded MPV is offered only on supported runtimes. The choice is saved for subsequent playback.
+- **See the actual decoded resolution.** The toolbar displays the dimensions reported by the active decoder rather than trusting labels such as “1080p” or “UHD” in a channel name. Windows native-view MPV now reports its decoded video dimensions too.
+- **Open stream information with any inline player.** The Stream info button shows the available resolution and, when reported by the engine, codecs, frame rate, bitrate, audio channels, container and buffered duration. Unknown values are left unknown.
+- **Keep original M3U category names and order.** Category titles retain their original capitalization and follow their order in the playlist instead of being automatically sorted or title-cased.
+- **Read long category names.** Labels wrap instead of being cut off, and channel counts appear in rounded badges.
+- **Give categories and channels more room.** Wider, resizable M3U group panes and a one-time width migration give channel names and logos more space. Channel logos remain visible in the grouped list.
+
+These changes do not add a manual quality selector to Embedded MPV and do not turn a lower-resolution source into UHD.
+
+## Privacy
+
+No personal M3U playlists, IPTV accounts, provider credentials, application profiles or local configuration are included. The examples and fixtures inherited from upstream are for development and testing. Local backups and compiled installation files are excluded.
+
+## Upstream and licensing
+
+This repository contains source changes, not a new installer release. The upstream name and artwork in the inherited files identify the original project. Any future redistributed build must use this fork's own app identity and icon, as explained in [TRADEMARK.md](TRADEMARK.md).
+
+The original project documentation follows below. Its download links refer to official upstream builds, which do not contain this fork's changes.
+
+---
+
 # IPTVnator
 
 <p align="center">

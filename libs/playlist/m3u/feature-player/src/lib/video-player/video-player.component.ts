@@ -1,3 +1,4 @@
+import { resolveM3uSidebarWidth } from './m3u-sidebar-width';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
     Component,
@@ -154,7 +155,7 @@ const M3U_EPG_GUIDE_HEADER_ACTION_ID = 'm3u-epg-guide';
 const M3U_SIDEBAR_STORAGE_KEY = 'm3u-sidebar-width';
 const M3U_GROUPS_SIDEBAR_STORAGE_KEY = 'm3u-groups-sidebar-width';
 const M3U_SIDEBAR_MIN_WIDTH = 200;
-const M3U_SIDEBAR_MAX_WIDTH = 600;
+const M3U_SIDEBAR_MAX_WIDTH = 1200;
 const M3U_SIDEBAR_DEFAULT_WIDTH = 460;
 
 /**
@@ -1211,20 +1212,7 @@ export class VideoPlayerComponent
     }
 
     private loadSidebarWidth(storageKey: string): number {
-        const fallbackKey =
-            storageKey === M3U_GROUPS_SIDEBAR_STORAGE_KEY
-                ? M3U_SIDEBAR_STORAGE_KEY
-                : '';
-        const storedWidth = Number.parseInt(
-            localStorage.getItem(storageKey) ??
-                (fallbackKey ? localStorage.getItem(fallbackKey) : '') ??
-                '',
-            10
-        );
-
-        return this.clampSidebarWidth(
-            Number.isNaN(storedWidth) ? M3U_SIDEBAR_DEFAULT_WIDTH : storedWidth
-        );
+        return resolveM3uSidebarWidth(storageKey, localStorage);
     }
 
     private persistSidebarWidth(storageKey: string, width: number): void {

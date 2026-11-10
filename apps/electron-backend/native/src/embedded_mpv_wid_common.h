@@ -137,6 +137,8 @@ struct SessionSnapshot {
     std::string aspectOverride = "no";
     /** Stream diagnostics for the player's info popover. Sentinels mean "not
      *  reported yet", so an unknown value omits its row instead of showing 0. */
+    int64_t videoWidth = 0;
+    int64_t videoHeight = 0;
     double fps = 0.0;                  /* estimated-vf-fps; <=0 = unknown */
     double videoBitrate = 0.0;         /* bits/s; <=0 = unknown */
     double audioBitrate = 0.0;
@@ -151,7 +153,9 @@ struct SessionSnapshot {
 
     // MPV_FORMAT_NONE revokes just this observation, not unrelated values.
     bool clearUnavailableStreamProperty(const std::string& name) {
-        if (name == "estimated-vf-fps") { fps = 0; }
+        if (name == "video-params/w") { videoWidth = 0; }
+        else if (name == "video-params/h") { videoHeight = 0; }
+        else if (name == "estimated-vf-fps") { fps = 0; }
         else if (name == "video-bitrate") { videoBitrate = 0; }
         else if (name == "audio-bitrate") { audioBitrate = 0; }
         else if (name == "video-format") { videoCodec.clear(); }
@@ -171,6 +175,8 @@ struct SessionSnapshot {
      *  fields so adding one cannot forget the reset. */
     void clearStreamStats()
     {
+        videoWidth = 0;
+        videoHeight = 0;
         fps = 0.0;
         videoBitrate = 0.0;
         audioBitrate = 0.0;
@@ -1681,6 +1687,10 @@ void runEventLoop(std::shared_ptr<Session> session)
                         *static_cast<char**>(property->data);
                     session->snapshot.aspectOverride =
                         value && value[0] ? value : "no";
+                } else if (name == "video-params/w" && property->format == MPV_FORMAT_INT64) {
+                    session->snapshot.videoWidth = *static_cast<int64_t*>(property->data);
+                } else if (name == "video-params/h" && property->format == MPV_FORMAT_INT64) {
+                    session->snapshot.videoHeight = *static_cast<int64_t*>(property->data);
                 } else if (name == "estimated-vf-fps" &&
                            property->format == MPV_FORMAT_DOUBLE) {
                     session->snapshot.fps =
@@ -1992,6 +2002,8 @@ Napi::Value CreateSession(const Napi::CallbackInfo& info)
         session->handle, 22, "audio-params/samplerate", MPV_FORMAT_INT64);
     /* File chapters draw the timeline segments and mark closing credits. */
     mpv_observe_property(session->handle, 23, "chapter-list", MPV_FORMAT_NODE);
+    mpv_observe_property(session->handle, 24, "video-params/w", MPV_FORMAT_INT64);
+    mpv_observe_property(session->handle, 25, "video-params/h", MPV_FORMAT_INT64);
 
     session->running.store(true);
     session->eventThread = std::thread(runEventLoop, session);
@@ -2711,6 +2723,10 @@ Napi::Value GetSessionSnapshot(const Napi::CallbackInfo& info)
     result.Set("chapters", chapters);
     result.Set("playbackSpeed", Napi::Number::New(env, snapshot.playbackSpeed));
     result.Set("aspectOverride", Napi::String::New(env, snapshot.aspectOverride));
+    if (snapshot.videoWidth > 0 && snapshot.videoHeight > 0) {
+        result.Set("videoWidth", Napi::Number::New(env, static_cast<double>(snapshot.videoWidth)));
+        result.Set("videoHeight", Napi::Number::New(env, static_cast<double>(snapshot.videoHeight)));
+    }
     writeStreamStats(env, result, snapshot);
     if (
         snapshot.recordingActive ||

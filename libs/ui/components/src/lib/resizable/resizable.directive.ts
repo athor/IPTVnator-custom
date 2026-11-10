@@ -61,6 +61,9 @@ export class ResizableDirective implements OnInit, AfterViewInit, OnDestroy {
     /** Default width to use when no stored value exists */
     readonly defaultWidth = input<number>(400);
 
+    /** Optional owner-managed width, kept separate from persisted defaults. */
+    readonly controlledWidth = input<number | null>(null);
+
     /** Position of the resize handle: 'right' or 'left' */
     readonly handlePosition = input<'right' | 'left'>('right');
 
@@ -89,6 +92,16 @@ export class ResizableDirective implements OnInit, AfterViewInit, OnDestroy {
     private readonly renderer = inject(Renderer2);
 
     constructor() {
+        effect(() => {
+            const width = this.controlledWidth();
+            if (
+                width !== null &&
+                Number.isFinite(width) &&
+                !this.isResizing()
+            ) {
+                this.setWidthImmediate(this.clampWidth(width));
+            }
+        });
         // Apply resizing class when dragging
         effect(() => {
             if (this.isResizing()) {

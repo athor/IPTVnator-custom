@@ -1,7 +1,12 @@
+import {
+    createInlinePlayerTools,
+    readInlinePlayerInfo,
+} from './inline-player-tools';
 import { WebPlayerActivity } from './web-player-activity';
 import { PLAYBACK_ACTIVITY_EVENTS } from '@iptvnator/services/activity-events';
 import {
     Component,
+    afterNextRender,
     ElementRef,
     Injector,
     OnDestroy,
@@ -317,7 +322,38 @@ export class WebPlayerViewComponent implements OnDestroy {
         inject(PLAYBACK_ACTIVITY_EVENTS, { optional: true })
     );
 
+    private inlinePlayerTools: ReturnType<
+        typeof createInlinePlayerTools
+    > | null = null;
+
     constructor() {
+        const readInfo = () =>
+            readInlinePlayerInfo(
+                this.fullscreenSurface,
+                this.selectedPlayer(),
+                this.embeddedMpvPlayer()?.session?.() ?? null
+            );
+        afterNextRender(() => {
+            this.inlinePlayerTools = createInlinePlayerTools(
+                this.fullscreenSurface,
+                {
+                    embeddedSupported:
+                        this.runtime.supportsEmbeddedMpv === true,
+                    read: readInfo,
+                    switchTo: async (player) => {
+                        this.recovery.syncSession();
+                        await this.settingsStore.updateSettings({ player });
+                        this.recoverySession.useSavedPlayer();
+                        this.recovery.clearDiagnostic();
+                        this.renderablePlayer.set(player);
+                    },
+                }
+            );
+        });
+        effect(() => {
+            const info = readInfo();
+            this.inlinePlayerTools?.refresh(info);
+        });
         effect(() => this.activity.begin(this.playback()));
         effect(() => {
             const session = this.externalPlayback?.activeSession() ?? null;
@@ -366,6 +402,8 @@ export class WebPlayerViewComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.inlinePlayerTools?.dispose();
+        this.inlinePlayerTools = null;
         this.activity.flush();
         this.liveAutoFormat.destroy();
         this.externalRecovery.destroy();

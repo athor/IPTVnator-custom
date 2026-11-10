@@ -212,7 +212,7 @@ describe('GroupsViewComponent', () => {
         fixture.detectChanges();
     }
 
-    it('sorts groups with numeric buckets before alphabetic buckets', () => {
+    it('preserves source group order, including numeric titles', () => {
         setInputs({
             groupedChannels: {
                 'Group 10': [sportsCenter],
@@ -222,8 +222,8 @@ describe('GroupsViewComponent', () => {
         });
 
         expect(component.filteredGroups().map((group) => group.key)).toEqual([
-            'Group 2',
             'Group 10',
+            'Group 2',
             'Alpha',
         ]);
     });
@@ -885,9 +885,7 @@ describe('GroupsViewComponent', () => {
         it('reveals the group again after the selection clears and returns (search with no matches, then cleared)', async () => {
             fixture.detectChanges();
             await fixture.whenStable();
-            const { container, rows } = mockRailGeometry([
-                150, 250, 350, 2200,
-            ]);
+            const { container, rows } = mockRailGeometry([150, 250, 350, 2200]);
             const key = rows[3].dataset['groupKey'] as string;
             scrollToMock().mockClear();
 

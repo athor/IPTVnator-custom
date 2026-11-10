@@ -1,5 +1,4 @@
 import { ChannelScrollFocusDirective } from '../../channel-scroll-focus/channel-scroll-focus.directive';
-import { KeyValue, TitleCasePipe } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -94,7 +93,6 @@ interface FilteredGroupView {
         MenuItemRadioDirective,
         ResizableDirective,
         ScrollingModule,
-        TitleCasePipe,
         TranslatePipe,
     ],
 })
@@ -135,19 +133,19 @@ export class GroupsViewComponent {
      */
     readonly compact = input(false);
     readonly navMinWidth = computed(() =>
-        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 164
+        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 200
     );
     readonly navMaxWidth = computed(() =>
-        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 320
+        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 480
     );
     readonly navDefaultWidth = computed(() =>
-        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 208
+        this.compact() ? COMPACT_GROUPS_NAV_WIDTH : 264
     );
     /** A key of its own, so the pinned width never overwrites the sidebar's. */
     readonly navStorageKey = computed(() =>
         this.compact()
             ? 'm3u-groups-nav-width-fullscreen'
-            : 'm3u-groups-nav-width'
+            : 'm3u-groups-nav-width-v2'
     );
 
     /** EPG map for channel enrichment */
@@ -316,7 +314,7 @@ export class GroupsViewComponent {
             key,
         }));
 
-        return groups.sort(this.groupsComparator);
+        return groups;
     });
 
     readonly visibleGroups = computed(() => {
@@ -649,31 +647,6 @@ export class GroupsViewComponent {
         this.channelContextMenu().close();
         ChannelDetailsDialogComponent.open(this.dialog, channel);
     }
-
-    /**
-     * Comparator for sorting groups - numeric groups first, then alphabetical
-     */
-    readonly groupsComparator = (
-        a: KeyValue<string, Channel[]> | { key: string },
-        b: KeyValue<string, Channel[]> | { key: string }
-    ): number => {
-        const numA = parseInt(a.key.replace(/\D/g, ''), 10);
-        const numB = parseInt(b.key.replace(/\D/g, ''), 10);
-
-        if (!Number.isNaN(numA) && !Number.isNaN(numB) && numA !== numB) {
-            return numA - numB;
-        }
-
-        if (!Number.isNaN(numA) && Number.isNaN(numB)) {
-            return -1;
-        }
-
-        if (Number.isNaN(numA) && !Number.isNaN(numB)) {
-            return 1;
-        }
-
-        return a.key.localeCompare(b.key);
-    };
 
     private emitSidebarWidthRequest(
         navWidth: number,

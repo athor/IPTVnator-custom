@@ -11,9 +11,10 @@
     [class.sidebar--guide-hidden]="guideOpen()"
     [attr.inert]="guideOpen() ? '' : null"
     appResizable
-    [minWidth]="sidebarMinWidth"
-    [maxWidth]="sidebarMaxWidth"
+    [minWidth]="activeView() === 'groups' ? 592 : sidebarMinWidth"
+    [maxWidth]="activeView() === 'groups' ? sidebarMaxWidth : 600"
     [defaultWidth]="sidebarWidth()"
+    [controlledWidth]="sidebarWidth()"
     [style.width.px]="sidebarWidth()"
     [storageKey]="sidebarStorageKey()"
     (widthChange)="onSidebarWidthChange($event)"

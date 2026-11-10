@@ -556,8 +556,9 @@ omitted, while a zero (dropped frames, for instance) is a real measurement.
 **Where the popover actually appears:** `app-player-controls` mounts only under
 the frame-copy engine (`@if (isFrameCopyEngine() && isSupported())` in
 `embedded-mpv-player.component.html`); the native-view engine keeps its legacy
-controls dock, which has no info affordance. So today the popover is a
-frame-copy-only surface. The macOS and Windows native-view backends plumb the
+controls dock. The Redone fork adds a separate inline toolbar above the
+video surface, with stream information for native-view too; the shared
+controls popover itself remains a frame-copy-only surface. The macOS and Windows native-view backends plumb the
 properties anyway — `mpv_observe_property` is push-based, so the rows appear
 for free whenever those engines adopt the shared controls — but do not describe
 the feature as available there. The Linux out-of-process backend deliberately
@@ -581,9 +582,10 @@ mpv properties at session init and map them into their session snapshot:
 
 The resolution row has a different source: it comes from `dwidth`/`dheight` on
 `EmbeddedMpvSession.videoWidth`/`videoHeight`, which **only the frame-copy
-helper observes** (it needs them to size its frames anyway). The native-view
-backends report no size, so a future shared-controls dock there would show
-every row except resolution until they observe those two properties too.
+helper observes** (it needs them to size its frames anyway). The Windows native-view backend additionally observes `video-params/w` and
+`video-params/h` and publishes the decoded pixel dimensions at the same root
+fields. It clears them at new-file start or when those properties become
+unavailable. Other native-view backends may still omit dimensions.
 
 `video-format` and `audio-codec-name` are used rather than `video-codec` /
 `audio-codec`: the popover wants `h264` and `aac`, not

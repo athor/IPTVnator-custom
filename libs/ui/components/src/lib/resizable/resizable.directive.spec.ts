@@ -10,6 +10,7 @@ import { ResizableDirective } from './resizable.directive';
             [minWidth]="minWidth"
             [maxWidth]="maxWidth"
             [defaultWidth]="defaultWidth"
+            [controlledWidth]="controlledWidth"
             [storageKey]="storageKey"
             [handlePosition]="handlePosition"
         ></aside>
@@ -19,6 +20,7 @@ class Host {
     minWidth = 200;
     maxWidth = 600;
     defaultWidth = 300;
+    controlledWidth: number | null = null;
     storageKey = 'sidebar-width';
     handlePosition: 'right' | 'left' = 'right';
 }
@@ -217,5 +219,15 @@ describe('ResizableDirective', () => {
 
         expect(aside.style.width).toBe('290px');
         expect(localStorage.getItem('sidebar-width')).toBeNull();
+    });
+    it('uses the owner width over stale storage without overwriting it', () => {
+        localStorage.setItem('m3u-groups-sidebar-width', '460');
+        const aside = render({
+            storageKey: 'm3u-groups-sidebar-width',
+            controlledWidth: 672,
+            maxWidth: 1200,
+        });
+        expect(aside.style.width).toBe('672px');
+        expect(localStorage.getItem('m3u-groups-sidebar-width')).toBe('460');
     });
 });

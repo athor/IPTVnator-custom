@@ -125,6 +125,12 @@ export class PlaybackRecoverySession {
         return true;
     }
 
+    /** An explicit persisted player choice supersedes failure recovery only. */
+    useSavedPlayer(): void {
+        this.temporaryPlayerOverrideState.set(null);
+        this.switchPendingState.set(false);
+    }
+
     beginRetry(): boolean {
         if (this.switchPendingState() || this.activeBindingState() === null) {
             return false;

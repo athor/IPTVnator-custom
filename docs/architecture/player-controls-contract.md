@@ -5,6 +5,16 @@ engine-agnostic player-controls contract and shared default controls.
 Embedded MPV rendering and native-view bounds behavior remain documented in
 [embedded-mpv-native.md](./embedded-mpv-native.md).
 
+## Fork inline tools
+
+The Redone fork adds a toolbar owned by `WebPlayerViewComponent` above the
+rendered engine. It saves explicit inline-player choices through `SettingsStore`,
+clears temporary recovery overrides, and retains the current route and content
+session. Its information panel is in document flow, outside the native MPV view,
+so it remains visible with the Windows native-view engine. Browser dimensions
+come from media metadata events; MPV dimensions and stats come from its existing
+session snapshots. No extra stream connection or quality probe is opened.
+
 ## Current status
 
 The Settings player selector probes external MPV/VLC using the same launch

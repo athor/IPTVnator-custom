@@ -212,3 +212,9 @@
         }
     }
 }
+
+@media (min-width: 641px) {
+    .sidebar:has(app-groups-view) {
+        max-width: 1200px;
+    }
+}
