@@ -9,8 +9,6 @@
 - **Read full category names.** Long labels wrap, and channel counts appear in rounded badges.
 - **Wider category and channel columns.** Resizable M3U group panes provide more room for names and logos. Channel logos remain visible in the grouped list.
 
-The changes do not upscale streams or add a manual quality selector to Embedded MPV.
-
 ## Download and installation
 
 **Windows x64:** [Download the custom ZIP](https://github.com/athor/IPTVnator-custom/releases/download/v0.25.0-custom.1/IPTVnator-custom-0.25.0.1-win-x64.zip) (about 295 MiB).
