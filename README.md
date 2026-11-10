@@ -1,3 +1,4 @@
+<img width="3453" height="1685" alt="sample" src="https://github.com/user-attachments/assets/25e67a81-6961-433b-a988-32635f8479da" />
 # IPTVnator Custom
 
 ## What's different from the official version?
