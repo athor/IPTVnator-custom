@@ -13,6 +13,14 @@ The changes do not upscale streams or add a manual quality selector to Embedded 
 
 ## Download and installation
 
-Custom builds belong in **[this repository's Releases](https://github.com/athor/IPTVnator-custom/releases)**.
+**Windows x64:** [Download the custom ZIP](https://github.com/athor/IPTVnator-custom/releases/download/v0.25.0-custom.1/IPTVnator-custom-0.25.0.1-win-x64.zip) (about 295 MiB).
 
-**No custom installer has been published yet.** Downloadable builds and their installation instructions will be added there when available.
+1. Download the ZIP and extract **all** its contents to a folder.
+2. Close any other running IPTVnator window.
+3. Run `IPTVnator.exe` from the extracted folder. No installer is required.
+
+Keep the executable and all accompanying folders together. Personal playlists and accounts are not included. An existing Windows user profile may be reused if you already have IPTVnator installed.
+
+[Release notes and SHA-256 checksums](https://github.com/athor/IPTVnator-custom/releases/tag/v0.25.0-custom.1) · [All custom releases](https://github.com/athor/IPTVnator-custom/releases)
+
+The first Windows package is a snapshot of the customized 0.25.0 runtime, with French labels in the added toolbar. The source port in this repository uses English labels.
